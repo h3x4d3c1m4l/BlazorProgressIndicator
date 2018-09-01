@@ -1,0 +1,43 @@
+﻿@implements IDisposable
+
+@if (Task != null)
+{
+    <div class="blazor-loadingindicator-loader-wrapper">
+        <!-- https://loading.io -->
+        <div style="width:100%; height:100%;" class="lds-dual-ring blazor-loadingindicator-loader">
+            <div></div>
+        </div>
+        <p style="margin: 0;">
+            <span style="font-size: 1.5em">@(Task.Maintext ?? "Loading ...")</span>
+            <br />
+            <span style="font-size: 1.2em">@(Task.Subtext ?? string.Empty)</span>
+        </p>
+    </div>
+}
+<div style="@(Task != null ? CONTENT_HIDDEN : string.Empty)">
+    @ChildContent
+</div>
+
+@functions {
+const string CONTENT_HIDDEN = "display: none;";
+
+[Parameter] RenderFragment ChildContent { get; set; }
+
+[Parameter] string LoadingId { get; set; }
+
+IRunningTask Task { get; set; }
+
+protected override void OnInit()
+{
+    LoadingManager.SubscribeToEvents(this, LoadingId, (IRunningTask task) =>
+    {
+        Task = task;
+        StateHasChanged();
+    });
+}
+
+public void Dispose()
+{
+
+}
+}
