@@ -1,0 +1,70 @@
+﻿@page "/counter"
+
+<h1>Table</h1>
+
+<Indicator LoadingId="fake-reload-table">
+    <button class="btn btn-primary" onclick="@FakeReloadTable">Reload</button>
+    <table>
+        <tr>
+            <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">id</th>
+            <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">first_name</th>
+            <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">last_name</th>
+            <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">email</th>
+            <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">gender</th>
+            <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">ip_address</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Shurlock</td>
+            <td>Wooster</td>
+            <td>swooster0@mashable.com</td>
+            <td>Male</td>
+            <td>200.241.168.39</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Sky</td>
+            <td>Ottey</td>
+            <td>sottey1@rediff.com</td>
+            <td>Male</td>
+            <td>154.62.59.38</td>
+        </tr>
+    </table>
+</Indicator>
+<hr />
+
+<h1>Counter</h1>
+
+<Indicator LoadingId="count">
+    <button class="btn btn-primary" onclick="@StartCount">Start count</button>
+</Indicator>
+
+@functions {
+int currentCount = 0;
+
+async Task FakeReloadTable()
+{
+    using (var task = this.Loading("fake-reload-table", "Loading ...", "Downloading table data"))
+    {
+        await Task.Delay(2500);
+    }
+}
+
+async Task StartCount()
+{
+    using (var task = this.Loading("count"))
+    {
+        task.Maintext = "Counting ...";
+        var i = 0;
+        while (i < 20)
+        {
+            Console.WriteLine($"teller: {i}");
+            task.Progress = ((double)i / 20);
+            task.Subtext = "Counted: " + i;
+            i++;
+            await Task.Delay(500);
+        }
+        currentCount++;
+    }
+}
+}
