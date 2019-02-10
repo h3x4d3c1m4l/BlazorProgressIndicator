@@ -29,7 +29,7 @@
 
     protected override void OnInit()
     {
-        LoadingManager.SubscribeToEvents(this, Context, (IRunningTask task) =>
+        LoadingManager.SubscribeToEvents(Context, (IRunningTask task) =>
         {
             Task = task;
             StateHasChanged();

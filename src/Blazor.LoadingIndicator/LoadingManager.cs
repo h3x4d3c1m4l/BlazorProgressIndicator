@@ -16,7 +16,7 @@ namespace Blazor.LoadingIndicator
 
         private static ConcurrentDictionary<string, TaskContext> _dict = new ConcurrentDictionary<string, TaskContext>();
 
-        public static IRunningTask Loading(this IComponent component, string context = "", string maintext = null, string subtext = null)
+        public static IRunningTask Loading(string context = "", string maintext = null, string subtext = null)
         {
             if (context == null)
                 context = string.Empty;
@@ -42,7 +42,7 @@ namespace Blazor.LoadingIndicator
             return task;
         }
 
-        public static void SubscribeToEvents(IComponent component, string context, Action<IRunningTask> action)
+        public static void SubscribeToEvents(string context, Action<IRunningTask> action)
         {
             if (!_dict.TryGetValue(context, out TaskContext c))
             {
@@ -52,7 +52,7 @@ namespace Blazor.LoadingIndicator
             c.Changed += (_, __) => action(c.Tasks.LastOrDefault());
         }
 
-        public static void DesubscribeToEvents(IComponent component, string context, Action action)
+        public static void DesubscribeToEvents(string context, Action action)
         {
             if (_dict.TryGetValue(context, out TaskContext c))
             {

@@ -44,7 +44,7 @@ int currentCount = 0;
 
 async Task FakeReloadTable()
 {
-    using (var task = this.Loading("fake-reload-table", "Loading ...", "Downloading table data"))
+    using (var task = LoadingManager.Loading("fake-reload-table", "Loading ...", "Downloading table data"))
     {
         await Task.Delay(2500);
     }
@@ -52,7 +52,7 @@ async Task FakeReloadTable()
 
 async Task StartCount()
 {
-    using (var task = this.Loading("count"))
+    using (var task = LoadingManager.Loading("count"))
     {
         task.Maintext = "Counting ...";
         var i = 0;
