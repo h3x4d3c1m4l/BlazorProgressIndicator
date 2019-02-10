@@ -19,25 +19,25 @@
 </div>
 
 @functions {
-const string CONTENT_HIDDEN = "display: none;";
+    const string CONTENT_HIDDEN = "display: none;";
 
-[Parameter] RenderFragment ChildContent { get; set; }
+    [Parameter] RenderFragment ChildContent { get; set; }
 
-[Parameter] string LoadingId { get; set; }
+    [Parameter] string Context { get; set; }
 
-IRunningTask Task { get; set; }
+    IRunningTask Task { get; set; }
 
-protected override void OnInit()
-{
-    LoadingManager.SubscribeToEvents(this, LoadingId, (IRunningTask task) =>
+    protected override void OnInit()
     {
-        Task = task;
-        StateHasChanged();
-    });
-}
+        LoadingManager.SubscribeToEvents(this, Context, (IRunningTask task) =>
+        {
+            Task = task;
+            StateHasChanged();
+        });
+    }
 
-public void Dispose()
-{
+    public void Dispose()
+    {
 
-}
+    }
 }
