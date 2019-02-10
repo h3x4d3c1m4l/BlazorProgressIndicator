@@ -21,7 +21,7 @@ namespace Blazor.LoadingIndicator
             if (context == null)
                 context = string.Empty;
 
-            var task = new RunningTask(context) { Maintext = maintext, Subtext = subtext };
+            var task = new RunningTask(context, maintext, subtext);
             if (!_dict.TryGetValue(context, out TaskContext c))
             {
                 c = new TaskContext
@@ -70,9 +70,11 @@ namespace Blazor.LoadingIndicator
 
             private string _subtext;
 
-            public RunningTask(string context)
+            public RunningTask(string context, string maintext, string subtext)
             {
                 _context = context;
+                _maintext = maintext;
+                _subtext = subtext;
             }
 
             public double? Progress
