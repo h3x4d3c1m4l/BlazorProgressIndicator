@@ -1,5 +1,13 @@
 ﻿@page "/counter"
 
+<h1>OnInit</h1>
+
+<Indicator Context="on-init">
+    <p>I'm successfully initialized!</p>
+</Indicator>
+
+<hr />
+
 <h1>Table</h1>
 
 <Indicator Context="fake-reload-table">
@@ -31,6 +39,7 @@
         </tr>
     </table>
 </Indicator>
+
 <hr />
 
 <h1>Counter</h1>
@@ -40,31 +49,39 @@
 </Indicator>
 
 @functions {
-int currentCount = 0;
+    int currentCount = 0;
 
-async Task FakeReloadTable()
-{
-    using (var task = LoadingManager.Loading("fake-reload-table", "Loading ...", "Downloading table data"))
+    protected override async Task OnInitAsync()
     {
-        await Task.Delay(2500);
-    }
-}
-
-async Task StartCount()
-{
-    using (var task = LoadingManager.Loading("count"))
-    {
-        task.Maintext = "Counting ...";
-        var i = 0;
-        while (i < 20)
+        using (var task = LoadingManager.Loading("on-init", "Initializing", "Please wait ..."))
         {
-            Console.WriteLine($"teller: {i}");
-            task.Progress = ((double)i / 20);
-            task.Subtext = "Counted: " + i;
-            i++;
-            await Task.Delay(500);
+            await Task.Delay(5000);
         }
-        currentCount++;
     }
-}
+
+    async Task FakeReloadTable()
+    {
+        using (var task = LoadingManager.Loading("fake-reload-table", "Loading ...", "Downloading table data"))
+        {
+            await Task.Delay(2500);
+        }
+    }
+
+    async Task StartCount()
+    {
+        using (var task = LoadingManager.Loading("count"))
+        {
+            task.Maintext = "Counting ...";
+            var i = 0;
+            while (i < 20)
+            {
+                Console.WriteLine($"teller: {i}");
+                task.Progress = ((double)i / 20);
+                task.Subtext = "Counted: " + i;
+                i++;
+                await Task.Delay(500);
+            }
+            currentCount++;
+        }
+    }
 }

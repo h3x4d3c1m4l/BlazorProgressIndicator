@@ -49,7 +49,9 @@ namespace Blazor.LoadingIndicator
                 c = new TaskContext();
                 _dict.TryAdd(context, c);
             }
+
             c.Changed += (_, __) => action(c.Tasks.LastOrDefault());
+            c.Changed?.Invoke(null, null);
         }
 
         public static void DesubscribeToEvents(string context, Action action)
