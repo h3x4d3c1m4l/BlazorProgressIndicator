@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Net.Mime;
+using Blazor.LoadingIndicator.Sample;
 
 namespace Blazor.LoadingIndicator.Sample.Server
 {
@@ -24,9 +25,11 @@ namespace Blazor.LoadingIndicator.Sample.Server
         {
             app.UseResponseCompression();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
+                routes.MapDefaultControllerRoute();
             });
 
             app.UseBlazor<Client.Program>();
