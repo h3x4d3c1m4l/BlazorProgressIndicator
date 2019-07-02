@@ -25,14 +25,15 @@ namespace Blazor.LoadingIndicator.Sample.Server
         {
             app.UseResponseCompression();
 
+            app.UseClientSideBlazorFiles<Client.Startup>();
+
             app.UseRouting();
 
-            app.UseEndpoints(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapDefaultControllerRoute();
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
-
-            app.UseBlazor<Client.Program>();
         }
     }
 }
