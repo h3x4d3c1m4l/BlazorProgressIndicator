@@ -11,7 +11,7 @@
 <h1>Table</h1>
 
 <Indicator Context="fake-reload-table">
-    <button class="btn btn-primary" onclick="@FakeReloadTable">Reload</button>
+    <button class="btn btn-primary" @onclick="@FakeReloadTable">Reload</button>
     <table>
         <tr>
             <th style="font-weight:bold !important; color: #666; background-color: #f5f5f5">id</th>
@@ -45,7 +45,7 @@
 <h1>Counter</h1>
 
 <Indicator Context="count">
-    <button class="btn btn-primary" onclick="@StartCount">Start count</button>
+    <button class="btn btn-primary" @onclick="@StartCount">Start count</button>
 </Indicator>
 
 @functions {
