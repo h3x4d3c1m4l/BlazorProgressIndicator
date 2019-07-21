@@ -1,20 +1,10 @@
 ﻿@implements IDisposable
 
-@if (Task != null)
+@if (CurrentTask != null && _fragment != null)
 {
-    <div class="blazor-loadingindicator-loader-wrapper">
-        <!-- https://loading.io -->
-        <div style="width:100%; height:100%;" class="lds-dual-ring blazor-loadingindicator-loader">
-            <div></div>
-        </div>
-        <p style="margin: 0;">
-            <span style="font-size: 1.5em">@(Task.Maintext ?? "Loading ...")</span>
-            <br />
-            <span style="font-size: 1.2em">@(Task.Subtext ?? string.Empty)</span>
-        </p>
-    </div>
+    @_fragment
 }
-<div style="@(Task != null ? CONTENT_HIDDEN : string.Empty)">
+<div style="@(CurrentTask != null ? CONTENT_HIDDEN : string.Empty)">
     @ChildContent
 </div>
 
@@ -25,19 +15,42 @@
 
     [Parameter] string Context { get; set; }
 
-    IRunningTask Task { get; set; }
+    [Parameter] Type TemplateType { get; set; } = Loading.DefaultTemplateType;
+
+    ITaskProgress CurrentTask { get; set; }
+
+    LoadingIndicatorTemplateBase _template;
+
+    RenderFragment _fragment;
+
+    private Action<ITaskProgress> HandleTaskProgressChangedEvent => new Action<ITaskProgress>((ITaskProgress task) =>
+    {
+        CurrentTask = task;
+        if (_template != null)
+        {
+            _template.CurrentTask = task;
+            _template.CallStateHasChanged();
+        }
+        StateHasChanged();
+    });
 
     protected override void OnInit()
     {
-        LoadingManager.SubscribeToEvents(Context, (IRunningTask task) =>
+        Loading.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        _fragment = new RenderFragment(builder =>
         {
-            Task = task;
-            StateHasChanged();
+            builder.OpenComponent(0, TemplateType);
+            builder.AddComponentReferenceCapture(1, inst =>
+            {
+                _template = (LoadingIndicatorTemplateBase)inst;
+                _template.CurrentTask = CurrentTask;
+            });
+            builder.CloseComponent();
         });
     }
 
     public void Dispose()
     {
-
+        Loading.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
     }
 }

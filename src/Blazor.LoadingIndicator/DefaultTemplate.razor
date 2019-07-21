@@ -1,0 +1,20 @@
+﻿@inherits LoadingIndicatorTemplateBase
+
+<div class="blazor-loadingindicator-loader-wrapper">
+    <!-- https://loading.io -->
+    <div style="width:100%; height:100%;" class="lds-dual-ring blazor-loadingindicator-loader">
+        <div></div>
+    </div>
+    <p style="margin: 0;">
+        <span style="font-size: 1.5em">@(CurrentTask?.Maintext ?? "Loading ...")</span>
+        <br />
+        @if (CurrentTask?.ProgressMax != null)
+        {
+            <progress value="@CurrentTask?.ProgressValue" max="@CurrentTask?.ProgressMax"/>
+        }
+        else
+        {
+            <span style="font-size: 1.2em">@(CurrentTask?.Subtext ?? string.Empty)</span>
+        }
+    </p>
+</div>
