@@ -1,8 +1,8 @@
-<img width="100" src="misc/logo.svg" align="center">
+<p align="center"><img width="100" src="misc/logo.svg"></p>
 <h1 align="center">Blazor.LoadingIndicator</h1>
 <p align="center">Simple to use loading indicator for Microsoft ASP.NET Core Blazor</p>
 <h2 align="center">Demo</h2>
-<img src="misc/sample.gif" width="400">
+<p align="center"><img src="misc/sample.gif" width="400"></p>
 <h2 align="center">Why I created this</h2>
 Sometimes you need to retrieve data from a (slow) server, or sort a huge amount of data. Of course you can just show nothing while loading, or build something yourself that shows a some sort of spinner while the work is being done.
 
