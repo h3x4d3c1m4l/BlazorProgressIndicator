@@ -12,7 +12,7 @@
     <Authors>Sander in 't Hout</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/h3x4d3c1m4l/Blazor.LoadingIndicator</PackageProjectUrl>
-    <PackageIconUrl/>
+    <PackageIconUrl>https://raw.githubusercontent.com/h3x4d3c1m4l/Blazor.LoadingIndicator/master/misc/logo.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/h3x4d3c1m4l/Blazor.LoadingIndicator</RepositoryUrl>
     <PackageTags>Blazor Loading Loader Spinner Indicator</PackageTags>
     <PackageLicenseExpression>GPLv3</PackageLicenseExpression>
