@@ -7,7 +7,7 @@ namespace Blazor.LoadingIndicator
 {
     public abstract class LoadingIndicatorTemplateBase : ComponentBase
     {
-        public ITaskProgress CurrentTask { protected get; set; }
+        public ITaskStatus CurrentTask { protected get; set; }
 
         public void CallStateHasChanged() => StateHasChanged();
     }

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Blazor.LoadingIndicator
 {
@@ -10,7 +11,7 @@ namespace Blazor.LoadingIndicator
         private class TaskContext
         {
             public List<RunningTask> Tasks = new List<RunningTask>();
-            public event Action<ITaskProgress> Changed;
+            public event Action<ITaskStatus> Changed;
 
             public void FireChanged()
             {
@@ -22,7 +23,7 @@ namespace Blazor.LoadingIndicator
 
         public static Type DefaultTemplateType { get; set; } = typeof(DefaultTemplate);
 
-        public static ITaskProgress NewTask(string context = "", string maintext = null, string subtext = null)
+        public static async Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = "", string maintext = null, string subtext = null)
         {
             if (context == null)
                 context = string.Empty;
@@ -45,10 +46,19 @@ namespace Blazor.LoadingIndicator
                 c.FireChanged();
             }
 
-            return task;
+            try
+            {
+                await action(task);
+                task.Status = TaskStatus.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                task.Exception = ex;
+                task.Status = TaskStatus.Failed;
+            }
         }
 
-        public static void SubscribeToTaskProgressChanged(string context, Action<ITaskProgress> action)
+        public static void SubscribeToTaskProgressChanged(string context, Action<ITaskStatus> action)
         {
             if (!_dict.TryGetValue(context, out TaskContext c))
             {
@@ -60,7 +70,7 @@ namespace Blazor.LoadingIndicator
             c.FireChanged();
         }
 
-        public static void UnsubscribeFromTaskProgressChanged(string context, Action<ITaskProgress> action)
+        public static void UnsubscribeFromTaskProgressChanged(string context, Action<ITaskStatus> action)
         {
             if (_dict.TryGetValue(context, out TaskContext c))
             {
@@ -68,7 +78,7 @@ namespace Blazor.LoadingIndicator
             }
         }
 
-        private class RunningTask : ITaskProgress
+        private class RunningTask : ITaskStatus
         {
             private string _context;
 
@@ -79,6 +89,10 @@ namespace Blazor.LoadingIndicator
             private string _maintext;
 
             private string _subtext;
+
+            private Exception _exception;
+
+            private TaskStatus _status;
 
             public RunningTask(string context, string maintext, string subtext)
             {
@@ -126,6 +140,28 @@ namespace Blazor.LoadingIndicator
                 set
                 {
                     _subtext = value;
+                    var c = _dict[_context];
+                    c.FireChanged();
+                }
+            }
+
+            public Exception Exception
+            {
+                get => _exception;
+                set
+                {
+                    _exception = value;
+                    var c = _dict[_context];
+                    c.FireChanged();
+                }
+            }
+
+            public TaskStatus Status
+            {
+                get => _status;
+                set
+                {
+                    _status = value;
                     var c = _dict[_context];
                     c.FireChanged();
                 }

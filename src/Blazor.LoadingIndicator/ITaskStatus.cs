@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Blazor.LoadingIndicator
 {
-    public interface ITaskProgress : IDisposable
+    public interface ITaskStatus : IDisposable
     {
         double? ProgressValue { get; set; }
 
@@ -13,5 +13,16 @@ namespace Blazor.LoadingIndicator
         string Maintext { get; set; }
 
         string Subtext { get; set; }
+
+        Exception Exception { get; set; }
+
+        TaskStatus Status { get; set; }
+    }
+
+    public enum TaskStatus
+    {
+        Started,
+        Succeeded,
+        Failed
     }
 }

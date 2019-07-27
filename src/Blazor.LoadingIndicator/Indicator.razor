@@ -1,29 +1,37 @@
 ﻿@implements IDisposable
 
-@if (CurrentTask != null && _fragment != null)
+@if (CurrentTask?.Status == TaskStatus.Started && _loadingFragment != null)
 {
-    @_fragment
+    @_loadingFragment
 }
-<div style="@(CurrentTask != null ? CONTENT_HIDDEN : string.Empty)">
+else if (CurrentTask?.Status == TaskStatus.Failed && ErrorContent != null)
+{
+    @ErrorContent(CurrentTask.Exception)
+}
+<div style="@((CurrentTask?.Status == TaskStatus.Succeeded ||
+              (CurrentTask?.Status == TaskStatus.Failed && ErrorContent == null) ||
+              CurrentTask == null) ? string.Empty : CONTENT_HIDDEN)">
     @ChildContent
 </div>
 
 @code {
-    const string CONTENT_HIDDEN = "display: none;";
+    private const string CONTENT_HIDDEN = "display: none;";
 
-    [Parameter] RenderFragment ChildContent { get; set; }
+    [Parameter] private RenderFragment ChildContent { get; set; }
 
-    [Parameter] string Context { get; set; }
+    [Parameter] private RenderFragment<Exception> ErrorContent { get; set; }
 
-    [Parameter] Type TemplateType { get; set; } = Loading.DefaultTemplateType;
+    [Parameter] private string Context { get; set; }
 
-    ITaskProgress CurrentTask { get; set; }
+    [Parameter] private Type TemplateType { get; set; } = Loading.DefaultTemplateType;
 
-    LoadingIndicatorTemplateBase _template;
+    private ITaskStatus CurrentTask { get; set; }
 
-    RenderFragment _fragment;
+    private LoadingIndicatorTemplateBase _template;
 
-    private Action<ITaskProgress> HandleTaskProgressChangedEvent => new Action<ITaskProgress>((ITaskProgress task) =>
+    private RenderFragment _loadingFragment;
+
+    private Action<ITaskStatus> HandleTaskProgressChangedEvent => new Action<ITaskStatus>((ITaskStatus task) =>
     {
         CurrentTask = task;
         if (_template != null)
@@ -37,7 +45,7 @@
     protected override void OnInit()
     {
         Loading.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
-        _fragment = new RenderFragment(builder =>
+        _loadingFragment = new RenderFragment(builder =>
         {
             builder.OpenComponent(0, TemplateType);
             builder.AddComponentReferenceCapture(1, inst =>

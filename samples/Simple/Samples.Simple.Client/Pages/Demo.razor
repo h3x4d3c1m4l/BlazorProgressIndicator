@@ -42,45 +42,49 @@
 
 <hr />
 
-<h1>Counter</h1>
+<h1>Counter with bug</h1>
 
-<Indicator Context="count">
-    <button class="btn btn-primary" @onclick="@StartCount">Start count</button>
+<Indicator Context="crashcount">
+    <ErrorContent Context="ex">
+        <p>Error: @ex.Message</p>
+        <button class="btn btn-primary" @onclick="@StartCrashCount">Retry!</button>
+    </ErrorContent>
+    <ChildContent>
+        <button class="btn btn-primary" @onclick="@StartCrashCount">Start crashing counter</button>
+    </ChildContent>
 </Indicator>
 
 @functions {
-    int currentCount = 0;
-
     protected override async Task OnInitAsync()
     {
-        using (var task = Loading.NewTask("on-init", "Initializing", "Please wait ..."))
+        await Loading.StartTaskAsync(async (task) =>
         {
             await Task.Delay(5000);
-        }
+        }, "on-init", "Initializing", "Please wait ...");
     }
 
     async Task FakeReloadTable()
     {
-        using (var task = Loading.NewTask("fake-reload-table", "Loading ...", "Downloading table data"))
+        await Loading.StartTaskAsync(async (task) =>
         {
-            await Task.Delay(2500);
-        }
+            await Task.Delay(3000);
+        }, "fake-reload-table", "Loading ...", "Downloading table data");
     }
 
-    async Task StartCount()
+    async Task StartCrashCount()
     {
-        using (var task = Loading.NewTask("count"))
+        await Loading.StartTaskAsync(async (task) =>
         {
             task.Maintext = "Counting ...";
             var i = 0;
             while (i < 20)
             {
-                Console.WriteLine($"teller: {i}");
-                task.Subtext = "Counted: " + i;
-                i++;
-                await Task.Delay(500);
+                await Task.Delay(250);
+                task.Subtext = "Counted: " + i++;
+                // bug
+                if (i == 12)
+                    throw new Exception("Sorry, I can't count higher than 11");
             }
-            currentCount++;
-        }
+        }, "crashcount");
     }
 }
