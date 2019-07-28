@@ -8,14 +8,13 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   
-    <PackageId>Blazor.LoadingIndicator</PackageId>
+    <PackageId>H3x.Blazor.LoadingIndicator</PackageId>
     <Authors>Sander in 't Hout</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/h3x4d3c1m4l/Blazor.LoadingIndicator</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/h3x4d3c1m4l/Blazor.LoadingIndicator/master/misc/logo.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/h3x4d3c1m4l/Blazor.LoadingIndicator</RepositoryUrl>
     <PackageTags>Blazor Loading Loader Spinner Indicator</PackageTags>
-    <PackageLicenseExpression>GPLv3</PackageLicenseExpression>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <Company/>
     <Version/>
   </PropertyGroup>
