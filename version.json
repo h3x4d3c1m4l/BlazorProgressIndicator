@@ -2,5 +2,8 @@
   "version": "0.2-preview.7",
   "publicReleaseRefSpec": [
     "^refs/heads/master$"
-  ]
+  ],
+  "nugetPackageVersion": {
+     "semVer": 2
+  }
 }
