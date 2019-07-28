@@ -1,7 +1,11 @@
 <p align="center"><img width="100" src="misc/logo.svg"></p>
 <h1 align="center">Blazor.LoadingIndicator</h1>
-[![NuGet Pre Release](https://img.shields.io/nuget/v/H3x.Blazor.LoadingIndicator?style=for-the-badge)](https://www.nuget.org/packages/H3x.Blazor.LoadingIndicator/)
 <p align="center">Simple to use loading indicator for Microsoft ASP.NET Core Blazor</p>
+<p align="center">
+  <a href="https://www.nuget.org/packages/H3x.Blazor.LoadingIndicator/" alt="NuGet">
+    <img src="https://img.shields.io/nuget/v/H3x.Blazor.LoadingIndicator?style=for-the-badge" />
+  </a>
+</p>
 <h2 align="center">Demo</h2>
 <p align="center"><img src="misc/sample.gif" width="400"></p>
 <h2 align="center">Why I created this</h2>
