@@ -49,12 +49,11 @@ namespace Blazor.LoadingIndicator
             try
             {
                 await action(task);
-                task.Status = TaskStatus.Succeeded;
+                task.Dispose();
             }
             catch (Exception ex)
             {
                 task.Exception = ex;
-                task.Status = TaskStatus.Failed;
             }
         }
 
@@ -99,6 +98,12 @@ namespace Blazor.LoadingIndicator
                 _context = context;
                 _maintext = maintext;
                 _subtext = subtext;
+            }
+
+            public void DismissException()
+            {
+                if (_exception != null)
+                    Dispose();
             }
 
             public double? ProgressValue

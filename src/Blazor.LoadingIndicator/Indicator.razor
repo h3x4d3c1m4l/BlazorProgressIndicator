@@ -1,15 +1,14 @@
 ﻿@implements IDisposable
 
-@if (CurrentTask?.Status == TaskStatus.Started && _loadingFragment != null)
+@if (CurrentTask?.Exception != null && ErrorContent != null)
+{
+    @ErrorContent(CurrentTask)
+}
+else if (CurrentTask != null && _loadingFragment != null)
 {
     @_loadingFragment
 }
-else if (CurrentTask?.Status == TaskStatus.Failed && ErrorContent != null)
-{
-    @ErrorContent(CurrentTask.Exception)
-}
-<div style="@((CurrentTask?.Status == TaskStatus.Succeeded ||
-              (CurrentTask?.Status == TaskStatus.Failed && ErrorContent == null) ||
+<div style="@(((CurrentTask?.Exception != null && ErrorContent == null) ||
               CurrentTask == null) ? string.Empty : CONTENT_HIDDEN)">
     @ChildContent
 </div>
@@ -19,7 +18,7 @@ else if (CurrentTask?.Status == TaskStatus.Failed && ErrorContent != null)
 
     [Parameter] private RenderFragment ChildContent { get; set; }
 
-    [Parameter] private RenderFragment<Exception> ErrorContent { get; set; }
+    [Parameter] private RenderFragment<ITaskStatus> ErrorContent { get; set; }
 
     [Parameter] private string Context { get; set; }
 

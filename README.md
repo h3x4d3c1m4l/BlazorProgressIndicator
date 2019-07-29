@@ -1,4 +1,4 @@
-<p align="center"><img width="100" src="misc/logo.svg"></p>
+<p align="center"><img width="100" src="misc/logo.png"></p>
 <h1 align="center">Blazor.LoadingIndicator</h1>
 <p align="center">Simple to use loading indicator for Microsoft ASP.NET Core Blazor</p>
 <p align="center">
