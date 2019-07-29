@@ -16,13 +16,6 @@ namespace Blazor.LoadingIndicator
 
         Exception Exception { get; set; }
 
-        TaskStatus Status { get; set; }
-    }
-
-    public enum TaskStatus
-    {
-        Started,
-        Succeeded,
-        Failed
+        void DismissException();
     }
 }

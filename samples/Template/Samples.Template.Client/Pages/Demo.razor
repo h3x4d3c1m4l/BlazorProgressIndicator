@@ -45,9 +45,9 @@
 <h1>Counter with bug</h1>
 
 <Indicator Context="crashcount" TemplateType="@typeof(Rainbow)">
-    <ErrorContent Context="ex">
-        <p>Error: @ex.Message</p>
-        <button class="btn btn-primary" @onclick="@StartCrashCount">Retry!</button>
+    <ErrorContent Context="t">
+        <p>Error: @t.Exception.Message</p>
+        <button class="btn btn-primary" @onclick="t.DismissException">Dismiss</button>
     </ErrorContent>
     <ChildContent>
         <button class="btn btn-primary" @onclick="@StartCrashCount">Start crashing counter</button>
