@@ -16,13 +16,13 @@ else if (CurrentTask != null && _loadingFragment != null)
 @code {
     private const string CONTENT_HIDDEN = "display: none;";
 
-    [Parameter] private RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
-    [Parameter] private RenderFragment<ITaskStatus> ErrorContent { get; set; }
+    [Parameter] public RenderFragment<ITaskStatus> ErrorContent { get; set; }
 
-    [Parameter] private string Context { get; set; }
+    [Parameter] public string Context { get; set; }
 
-    [Parameter] private Type TemplateType { get; set; } = Loading.DefaultTemplateType;
+    [Parameter] public Type TemplateType { get; set; } = Loading.DefaultTemplateType;
 
     private ITaskStatus CurrentTask { get; set; }
 
@@ -41,7 +41,7 @@ else if (CurrentTask != null && _loadingFragment != null)
         StateHasChanged();
     });
 
-    protected override void OnInit()
+    protected override void OnInitialized()
     {
         Loading.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
         _loadingFragment = new RenderFragment(builder =>
