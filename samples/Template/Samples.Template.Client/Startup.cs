@@ -1,3 +1,4 @@
+using Blazor.LoadingIndicator;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +8,7 @@ namespace Samples.Template.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLoadingIndicator();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

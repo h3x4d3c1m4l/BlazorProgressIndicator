@@ -1,4 +1,5 @@
 ﻿@implements IDisposable
+@inject ILoadingService LoadingService
 
 @if (CurrentTask?.Exception != null && ErrorContent != null)
 {
@@ -22,7 +23,7 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     [Parameter] public string Context { get; set; }
 
-    [Parameter] public Type TemplateType { get; set; } = Loading.DefaultTemplateType;
+    [Parameter] public Type TemplateType { get; set; } 
 
     private ITaskStatus CurrentTask { get; set; }
 
@@ -32,6 +33,7 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     private Action<ITaskStatus> HandleTaskProgressChangedEvent => new Action<ITaskStatus>((ITaskStatus task) =>
     {
+        TemplateType = LoadingService.DefaultTemplateType;
         CurrentTask = task;
         if (_template != null)
         {
@@ -42,8 +44,8 @@ else if (CurrentTask != null && _loadingFragment != null)
     });
 
     protected override void OnInitialized()
-    {
-        Loading.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+    {        
+        LoadingService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
         _loadingFragment = new RenderFragment(builder =>
         {
             builder.OpenComponent(0, TemplateType);
@@ -58,6 +60,6 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     public void Dispose()
     {
-        Loading.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        LoadingService.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
     }
 }
