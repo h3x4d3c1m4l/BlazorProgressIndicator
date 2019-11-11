@@ -14,7 +14,9 @@ else if (CurrentTask != null && _loadingFragment != null)
     @ChildContent
 </div>
 
-@code {
+@code {    
+
+
     private const string CONTENT_HIDDEN = "display: none;";
 
     [Parameter] public RenderFragment ChildContent { get; set; }
@@ -33,7 +35,6 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     private Action<ITaskStatus> HandleTaskProgressChangedEvent => new Action<ITaskStatus>((ITaskStatus task) =>
     {
-        TemplateType = LoadingService.DefaultTemplateType;
         CurrentTask = task;
         if (_template != null)
         {
@@ -42,9 +43,11 @@ else if (CurrentTask != null && _loadingFragment != null)
         }
         StateHasChanged();
     });
+    
 
     protected override void OnInitialized()
-    {        
+    {               
+        if(TemplateType == null) TemplateType = LoadingService.DefaultTemplateType;        
         LoadingService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
         _loadingFragment = new RenderFragment(builder =>
         {
