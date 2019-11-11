@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blazor.LoadingIndicator
 {
-    public static class Loading
+    public class LoadingService : ILoadingService
     {
         private class TaskContext
         {
@@ -21,9 +21,9 @@ namespace Blazor.LoadingIndicator
 
         private static ConcurrentDictionary<string, TaskContext> _dict = new ConcurrentDictionary<string, TaskContext>();
 
-        public static Type DefaultTemplateType { get; set; } = typeof(DefaultTemplate);
+        public Type DefaultTemplateType { get; set; } = typeof(DefaultTemplate);
 
-        public static async Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = "", string maintext = null, string subtext = null)
+        public async Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = "", string maintext = null, string subtext = null)
         {
             if (context == null)
                 context = string.Empty;
@@ -57,7 +57,7 @@ namespace Blazor.LoadingIndicator
             }
         }
 
-        public static void SubscribeToTaskProgressChanged(string context, Action<ITaskStatus> action)
+        public void SubscribeToTaskProgressChanged(string context, Action<ITaskStatus> action)
         {
             if (!_dict.TryGetValue(context, out TaskContext c))
             {
@@ -69,7 +69,7 @@ namespace Blazor.LoadingIndicator
             c.FireChanged();
         }
 
-        public static void UnsubscribeFromTaskProgressChanged(string context, Action<ITaskStatus> action)
+        public void UnsubscribeFromTaskProgressChanged(string context, Action<ITaskStatus> action)
         {
             if (_dict.TryGetValue(context, out TaskContext c))
             {
