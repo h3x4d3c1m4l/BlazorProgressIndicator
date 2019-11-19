@@ -33,15 +33,15 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     private RenderFragment _loadingFragment;
 
-    private Action<ITaskStatus> HandleTaskProgressChangedEvent => new Action<ITaskStatus>((ITaskStatus task) =>
+    private Func<ITaskStatus, Task> HandleTaskProgressChangedEvent => new Func<ITaskStatus, Task>(async (ITaskStatus task) =>
     {
         CurrentTask = task;
         if (_template != null)
         {
             _template.CurrentTask = task;
-            _template.CallStateHasChanged();
+            await _template.CallStateHasChanged();
         }
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     });
     
 

@@ -7,7 +7,7 @@ namespace Blazor.LoadingIndicator
     {
         Type DefaultTemplateType { get; set; }
         Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = "", string maintext = null, string subtext = null);
-        void SubscribeToTaskProgressChanged(string context, Action<ITaskStatus> action);
-        void UnsubscribeFromTaskProgressChanged(string context, Action<ITaskStatus> action);
+        void SubscribeToTaskProgressChanged(string context, Func<ITaskStatus, Task> action);
+        void UnsubscribeFromTaskProgressChanged(string context, Func<ITaskStatus, Task> action);
     }
 }
