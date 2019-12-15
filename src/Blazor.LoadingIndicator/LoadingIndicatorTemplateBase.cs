@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Blazor.LoadingIndicator
 {
@@ -9,6 +10,6 @@ namespace Blazor.LoadingIndicator
     {
         public ITaskStatus CurrentTask { protected get; set; }
 
-        public void CallStateHasChanged() => StateHasChanged();
+        public Task CallStateHasChanged() => InvokeAsync(StateHasChanged);
     }
 }
