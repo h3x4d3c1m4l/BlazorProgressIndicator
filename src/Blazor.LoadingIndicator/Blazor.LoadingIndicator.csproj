@@ -30,7 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Nerdbank.GitVersioning" Version="3.0.28" />
+    <PackageReference Include="GitVersionTask" Version="5.1.2" Condition="'$(H3X_SKIP_GITVERSIONTASK)' != ''">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
