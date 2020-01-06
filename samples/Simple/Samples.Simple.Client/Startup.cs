@@ -8,7 +8,7 @@ namespace Samples.Simple.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLoadingIndicator();
+            services.AddLoadingIndicator(true);
         }
 
         public void Configure(IComponentsApplicationBuilder app)

@@ -8,22 +8,13 @@ namespace Blazor.LoadingIndicator
 {
     public class LoadingService : ILoadingService
     {
-        private class TaskContext
-        {
-            public List<RunningTask> Tasks = new List<RunningTask>();
-            public event Func<ITaskStatus, Task> Changed;
-
-            public void FireChanged()
-            {
-                Changed?.Invoke(Tasks.LastOrDefault());
-            }
-        }
-
         private static ConcurrentDictionary<string, TaskContext> _dict = new ConcurrentDictionary<string, TaskContext>();
 
         public Type DefaultTemplateType { get; set; } = typeof(DefaultTemplate);
 
-        public async Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = "", string maintext = null, string subtext = null)
+        public bool DumpExceptionsToConsole { get; set; }
+
+        public async Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = null, string maintext = null, string subtext = null)
         {
             if (context == null)
                 context = string.Empty;
@@ -54,6 +45,10 @@ namespace Blazor.LoadingIndicator
             catch (Exception ex)
             {
                 task.Exception = ex;
+                if (DumpExceptionsToConsole)
+                {
+                    Console.Error.Write(ex);
+                }
             }
         }
 
@@ -74,6 +69,17 @@ namespace Blazor.LoadingIndicator
             if (_dict.TryGetValue(context, out TaskContext c))
             {
                 c.Changed -= action;
+            }
+        }
+
+        private class TaskContext
+        {
+            public List<RunningTask> Tasks = new List<RunningTask>();
+            public event Func<ITaskStatus, Task> Changed;
+
+            public void FireChanged()
+            {
+                Changed?.Invoke(Tasks.LastOrDefault());
             }
         }
 
