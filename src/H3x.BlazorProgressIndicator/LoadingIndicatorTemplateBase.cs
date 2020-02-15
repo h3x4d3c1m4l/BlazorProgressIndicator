@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blazor.LoadingIndicator
+namespace H3x.BlazorProgressIndicator
 {
     public abstract class LoadingIndicatorTemplateBase : ComponentBase
     {

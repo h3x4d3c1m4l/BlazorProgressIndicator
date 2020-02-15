@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Blazor.LoadingIndicator
+namespace H3x.BlazorProgressIndicator
 {
     public interface ITaskStatus : IDisposable
     {

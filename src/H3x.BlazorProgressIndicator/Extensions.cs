@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Blazor.LoadingIndicator
+namespace H3x.BlazorProgressIndicator
 {
     public static class Extensions
     {

@@ -6,13 +6,13 @@
     <LangVersion>7.3</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
   
-    <PackageId>H3x.Blazor.LoadingIndicator</PackageId>
+    <PackageId>H3x.BlazorProgressIndicator</PackageId>
     <Authors>Sander in 't Hout</Authors>
-    <PackageProjectUrl>https://github.com/h3x4d3c1m4l/Blazor.LoadingIndicator</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/h3x4d3c1m4l/Blazor.LoadingIndicator/master/misc/logo.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/h3x4d3c1m4l/Blazor.LoadingIndicator</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/h3x4d3c1m4l/BlazorProgressIndicator</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/h3x4d3c1m4l/BlazorProgressIndicator/master/misc/logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/h3x4d3c1m4l/BlazorProgressIndicator</RepositoryUrl>
     <PackageTags>Blazor Loading Loader Spinner Indicator</PackageTags>
-    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+    <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
     <Company />
     <Version />
   </PropertyGroup>
