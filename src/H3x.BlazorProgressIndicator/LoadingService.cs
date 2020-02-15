@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blazor.LoadingIndicator
+namespace H3x.BlazorProgressIndicator
 {
     public class LoadingService : ILoadingService
     {

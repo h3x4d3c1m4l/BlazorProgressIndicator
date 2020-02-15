@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Blazor.LoadingIndicator
+namespace H3x.BlazorProgressIndicator
 {
     public interface ILoadingService
     {

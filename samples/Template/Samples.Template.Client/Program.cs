@@ -1,4 +1,4 @@
-﻿using Blazor.LoadingIndicator;
+﻿using H3x.BlazorProgressIndicator;
 using Microsoft.AspNetCore.Blazor.Hosting;
 using System.Threading.Tasks;
 

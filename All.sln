@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29111.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{295D4CE6-F3E9-403E-ADF6-6F4D3581A083}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.LoadingIndicator", "src\Blazor.LoadingIndicator\Blazor.LoadingIndicator.csproj", "{FC76C759-5163-44A6-8ACC-74A3035B5665}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H3x.BlazorProgressIndicator", "src\H3x.BlazorProgressIndicator\H3x.BlazorProgressIndicator.csproj", "{FC76C759-5163-44A6-8ACC-74A3035B5665}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simple", "Simple", "{ADA6CA96-3D11-4135-8DBC-B2E7BC46D047}"
 EndProject
