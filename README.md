@@ -19,4 +19,4 @@ Take a look at the code of the two sample projects.
 The simple example utilizes the built-in template while the more complex example shows how to use multiple templates (even on one page).
 
 <h2 align="center">License</h2>
-This library is released under the GNU GPLv3 license.
+This library is released under the GNU LGPLv3 license.
