@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace H3x.BlazorProgressIndicator
 {
-    public class LoadingService : ILoadingService
+    public class IndicatorService : IIndicatorService
     {
         private static ConcurrentDictionary<string, TaskContext> _dict = new ConcurrentDictionary<string, TaskContext>();
 

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace H3x.BlazorProgressIndicator
 {
-    public interface ILoadingService
+    public interface IIndicatorService
     {
         Type DefaultTemplateType { get; set; }
         Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = "", string maintext = null, string subtext = null);

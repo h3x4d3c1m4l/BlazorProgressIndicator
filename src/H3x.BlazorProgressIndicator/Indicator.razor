@@ -1,5 +1,5 @@
 ﻿@implements IDisposable
-@inject ILoadingService LoadingService
+@inject IIndicatorService LoadingService
 
 @if (CurrentTask?.Exception != null && ErrorContent != null)
 {
@@ -19,19 +19,36 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     private const string CONTENT_HIDDEN = "display: none;";
 
+    [Parameter] public RenderFragment<ITaskStatus> InProgressContent { get; set; }
+
     [Parameter] public RenderFragment ChildContent { get; set; }
 
     [Parameter] public RenderFragment<ITaskStatus> ErrorContent { get; set; }
 
     [Parameter] public string Context { get; set; }
 
-    [Parameter] public Type TemplateType { get; set; } 
+    [Parameter] public Type TemplateType { get; set; }
 
     private ITaskStatus CurrentTask { get; set; }
 
     private LoadingIndicatorTemplateBase _template;
 
     private RenderFragment _loadingFragment;
+
+    // https://stackoverflow.com/questions/50188680/add-load-components-dynamically
+    RenderFragment InProgressContentCreator() => builder =>
+    {
+        if (InProgressContent != null)
+        {
+            builder.AddContent(0, InProgressContent);
+        }
+        else
+        {
+            builder.OpenComponent(0, typeof(DefaultTemplate));
+            builder.AddAttribute(1, "Title", "Some title");
+            builder.CloseComponent();
+        }
+    };
 
     private Func<ITaskStatus, Task> HandleTaskProgressChangedEvent => new Func<ITaskStatus, Task>(async (ITaskStatus task) =>
     {
@@ -43,11 +60,10 @@ else if (CurrentTask != null && _loadingFragment != null)
         }
         await InvokeAsync(StateHasChanged);
     });
-    
 
     protected override void OnInitialized()
-    {               
-        if(TemplateType == null) TemplateType = LoadingService.DefaultTemplateType;        
+    {
+        if(TemplateType == null) TemplateType = LoadingService.DefaultTemplateType;
         LoadingService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
         _loadingFragment = new RenderFragment(builder =>
         {
