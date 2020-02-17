@@ -1,16 +1,19 @@
 
 
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace H3x.BlazorProgressIndicator
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddLoadingIndicator(this IServiceCollection services, bool dumpExceptionsToConsole = false)
+        public static IServiceCollection AddProgressIndicator(this IServiceCollection services, Action<ProgressIndicatorOptions> options)
         {
+            var _options = new ProgressIndicatorOptions();
+            options(_options);
             services.AddSingleton<IIndicatorService, IndicatorService>(_ => new IndicatorService
             {
-                DumpExceptionsToConsole = dumpExceptionsToConsole
+                Options = _options
             });
             return services;
         }
