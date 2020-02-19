@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace H3x.BlazorProgressIndicator
 {
-    public abstract class LoadingIndicatorTemplateBase : ComponentBase
+    public abstract class IndicatorTemplateBase : ComponentBase
     {
         public ITaskStatus CurrentTask { protected get; set; }
 

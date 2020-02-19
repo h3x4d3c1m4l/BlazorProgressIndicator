@@ -9,10 +9,18 @@ namespace Samples.Simple.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault();
-            builder.Services.AddLoadingIndicator(true);
+            builder.Services.AddProgressIndicator(options =>
+            {
+            });
             builder.RootComponents.Add<App>("app");
 
             await builder.Build().RunAsync();
+
+            var n = new IndicatorOptions
+            {
+                IndicatorTemplate = null
+            };
+            n.IndicatorTemplate = null;
         }
     }
 }

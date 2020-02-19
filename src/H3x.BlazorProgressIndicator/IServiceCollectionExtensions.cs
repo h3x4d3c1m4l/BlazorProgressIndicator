@@ -7,9 +7,9 @@ namespace H3x.BlazorProgressIndicator
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddProgressIndicator(this IServiceCollection services, Action<ProgressIndicatorOptions> options)
+        public static IServiceCollection AddProgressIndicator(this IServiceCollection services, Action<IndicatorOptions> options)
         {
-            var _options = new ProgressIndicatorOptions();
+            var _options = new IndicatorOptions();
             options(_options);
             services.AddSingleton<IIndicatorService, IndicatorService>(_ => new IndicatorService
             {

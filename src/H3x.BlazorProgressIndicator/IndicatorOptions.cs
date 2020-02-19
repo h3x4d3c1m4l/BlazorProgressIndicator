@@ -4,7 +4,7 @@ using System.Text;
 
 namespace H3x.BlazorProgressIndicator
 {
-    public class ProgressIndicatorSettings
+    public class IndicatorOptions
     {
         public Type IndicatorTemplate { get; set; } = typeof(DefaultTemplate);
     }
