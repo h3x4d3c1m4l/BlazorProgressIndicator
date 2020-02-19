@@ -1,4 +1,5 @@
-﻿@implements IDisposable
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@implements IDisposable
 @inject IIndicatorService LoadingService
 
 @if (CurrentTask?.Exception != null && ErrorContent != null)
@@ -7,16 +8,14 @@
 }
 else if (CurrentTask != null)
 {
-    @InProgressTemplate
+    @InProgressTemplate(CurrentTask)
 }
 <div style="@(((CurrentTask?.Exception != null && ErrorContent == null) ||
               CurrentTask == null) ? string.Empty : CONTENT_HIDDEN)">
     @ChildContent
 </div>
 
-@code {    
-
-
+@code {
     private const string CONTENT_HIDDEN = "display: none;";
 
     [Parameter] public RenderFragment<ITaskStatus> InProgressTemplate { get; set; }
@@ -32,39 +31,38 @@ else if (CurrentTask != null)
     private ITaskStatus CurrentTask { get; set; }
 
     // https://stackoverflow.com/questions/50188680/add-load-components-dynamically
-    RenderFragment InProgressContentCreator() => builder =>
+    RenderFragment<ITaskStatus> InProgressContentCreator() => taskStatus =>
     {
-        if (InProgressTemplate != null)
+        return new RenderFragment((builder) =>
         {
-            return;
-        }
-        else if (InProgressTemplate != null)
-        {
-            builder.OpenComponent(0, TemplateType);
-            builder.CloseComponent();
-        }
-        else
-        {
-            builder.OpenComponent(0, typeof(DefaultTemplate));
-            builder.CloseComponent();
-        }
-        builder.
+            if (TemplateType != null)
+            {
+                builder.OpenComponent(0, TemplateType);
+                builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
+                builder.CloseComponent();
+            }
+            else
+            {
+                builder.OpenComponent(0, typeof(DefaultTemplate));
+                builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
+                builder.CloseComponent();
+            }
+        });
     };
 
     private Func<ITaskStatus, Task> HandleTaskProgressChangedEvent => new Func<ITaskStatus, Task>(async (ITaskStatus task) =>
     {
         CurrentTask = task;
-        //if (_template != null)
-        //{
-        //    _template.CurrentTask = task;
-        //    await _template.CallStateHasChanged();
-        //}
-        await InvokeAsync(StateHasChanged);
+        StateHasChanged();
     });
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        base.OnParametersSet();
+        LoadingService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        if (InProgressTemplate == null)
+            InProgressTemplate = InProgressContentCreator();
+
+        base.OnInitialized();
     }
 
     public void Dispose()
