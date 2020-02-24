@@ -1,0 +1,84 @@
+﻿@page "/customtemplatedemo"
+@inject IIndicatorService IndicatorService
+
+<h1>Provide default template type using <code>IndicatorOptions</code></h1>
+
+<p><code>Program.cs:</code></p>
+<pre>
+    var builder = WebAssemblyHostBuilder.CreateDefault();
+    builder.Services.AddProgressIndicator(options =>
+    {
+        options.IndicatorTemplate = typeof(YourIndicatorTemplateType);
+    });
+    builder.RootComponents.Add&lt;App&gt;("app");
+</pre>
+
+<Indicator Context="keep-showing" TemplateType="typeof(CustomIndicatorTemplate)">
+    <p>I will never finish :(</p>
+</Indicator>
+
+<hr />
+
+<h1>Using <code>Indicator</code>'s <code>TemplateType</code> attribute</h1>
+
+<p><code>Page.razor:</code></p>
+<pre>
+    &lt;Indicator Context="..." TemplateType="typeof(YourIndicatorTemplateType)"&gt;
+        ...
+    &lt;/Indicator&gt;
+</pre>
+
+<Indicator Context="keep-showing" TemplateType="typeof(CustomIndicatorTemplate)">
+    <p>I will never finish :(</p>
+</Indicator>
+
+<hr />
+
+<h1>Using <code>Indicator</code>'s <code>InProgressTemplate</code> property</h1>
+
+<p><code>Page.razor:</code></p>
+<pre>
+    &lt;Indicator Context=&quot;...&quot;&gt;
+        &lt;InProgressTemplate&gt;
+            ...
+        &lt;/InProgressTemplate&gt;
+        &lt;ChildContent&gt;
+            ...
+        &lt;/ChildContent&gt;
+    &lt;/Indicator&gt;
+</pre>
+
+<Indicator Context="keep-showing">
+    <InProgressTemplate>
+        <div class="blazor-loadingindicator-loader-wrapper">
+            <div class="spinner"></div>
+            <p style="margin: 0;">
+                <span style="font-size: 1.5em">@(context?.Maintext ?? "Loading ...")</span>
+                <br />
+                @if (context?.ProgressMax != null)
+                {
+                    <progress value="@context?.ProgressValue" max="@context?.ProgressMax" />
+                }
+                else
+                {
+                    <span style="font-size: 1.2em">@(context?.Subtext ?? string.Empty)</span>
+                }
+            </p>
+        </div>
+    </InProgressTemplate>
+    <ChildContent>
+        <p>I will never finish :(</p>
+    </ChildContent>
+</Indicator>
+
+<hr />
+
+@functions {
+    protected override async Task OnInitializedAsync()
+    {
+        await IndicatorService.StartTaskAsync(async (task) =>
+        {
+            await Task.Delay(int.MaxValue);
+        }, "keep-showing", "Initializing", "Please wait ...");
+    }
+}

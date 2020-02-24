@@ -1,6 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.Rendering
-@implements IDisposable
-@inject IIndicatorService LoadingService
+﻿@implements IDisposable
+@inject IIndicatorService IndicatorService
 
 @if (CurrentTask?.Exception != null && ErrorContent != null)
 {
@@ -30,31 +29,24 @@ else if (CurrentTask != null)
 
     private ITaskStatus CurrentTask { get; set; }
 
+    private static readonly Type DefaultInProgressTemplateType = typeof(DefaultTemplate);
+
     // https://stackoverflow.com/questions/50188680/add-load-components-dynamically
     RenderFragment<ITaskStatus> InProgressContentCreator() => taskStatus =>
     {
         return new RenderFragment((builder) =>
         {
-            if (TemplateType != null)
-            {
-                builder.OpenComponent(0, TemplateType);
-                builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
-                builder.CloseComponent();
-            }
-            else
-            {
-                builder.OpenComponent(0, typeof(DefaultTemplate));
-                builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
-                builder.CloseComponent();
-            }
+            builder.OpenComponent(0, TemplateType ?? IndicatorService.DefaultTemplateType ?? DefaultInProgressTemplateType);
+            builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
+            builder.CloseComponent();
         });
     };
 
-    private Func<ITaskStatus, Task> HandleTaskProgressChangedEvent => new Func<ITaskStatus, Task>(async (ITaskStatus task) =>
+    private void HandleTaskProgressChangedEvent(ITaskStatus task)
     {
         CurrentTask = task;
         StateHasChanged();
-    });
+    }
 
     protected override void OnInitialized()
     {

@@ -1,0 +1,22 @@
+﻿@page "/"
+
+<h1>Thanks for trying this library!</h1>
+
+<p>Please take a look at the two sample pages that show how you to use the library.</p>
+
+<h2>Simple demo</h2>
+
+<p>The simple demo shows you just how to invoke a (possibly) long running task and use the default template for the progress indicator.</p>
+<p>This default template does not use any CSS framework, and uses unique CSS class names to not interfer with any CSS framework (like Bulma, Bootstrap).</p>
+
+<h2>Custom template demo</h2>
+
+<p>
+    The custom template demo page shows three ways of providing your own template (the latter will override the previous one(s)):
+    <ul>
+        <li>Set the default template using <code>IndicatorOptions</code><br />This is the best option when you want to use the <i>same template for multiple indicators</i></li>
+        <li>Provide your template's type to the indicator by using <code>Indicator</code>'s <code>TemplateType</code> attribute<br />Use this if you don't want your custom template to be the default, but you do want to use it for <i>multiple indicators</i></li>
+        <li>Provide your template to <code>Indicator</code> directly using it's <code>InProgressTemplate</code> property<br />Use this if you want to <i>use your template only once</i></li>
+    </ul>
+    Please find examples of these methods in <code>CustomTemplateDemo.razor</code>.
+</p>
