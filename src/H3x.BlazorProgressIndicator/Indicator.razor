@@ -42,15 +42,15 @@ else if (CurrentTask != null)
         });
     };
 
-    private void HandleTaskProgressChangedEvent(ITaskStatus task)
+    private async Task HandleTaskProgressChangedEvent(ITaskStatus task)
     {
         CurrentTask = task;
-        StateHasChanged();
+        await InvokeAsync(StateHasChanged);
     }
 
     protected override void OnInitialized()
     {
-        LoadingService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        IndicatorService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
         if (InProgressTemplate == null)
             InProgressTemplate = InProgressContentCreator();
 
@@ -59,6 +59,6 @@ else if (CurrentTask != null)
 
     public void Dispose()
     {
-        LoadingService.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        IndicatorService.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
     }
 }

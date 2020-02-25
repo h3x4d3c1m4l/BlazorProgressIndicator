@@ -13,6 +13,12 @@
     builder.RootComponents.Add&lt;App&gt;("app");
 </pre>
 
+@*
+    Please note that the TemplateType attribute is used here.
+    Because the IIndicatorService's are shared, changing the
+    default template of this IIndicatorService would also change
+    it for the Simple Demo.
+*@
 <Indicator Context="keep-showing" TemplateType="typeof(CustomIndicatorTemplate)">
     <p>I will never finish :(</p>
 </Indicator>

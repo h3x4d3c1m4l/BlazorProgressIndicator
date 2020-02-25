@@ -54,7 +54,7 @@ namespace H3x.BlazorProgressIndicator
             }
         }
 
-        public void SubscribeToTaskProgressChanged(string context, Action<ITaskStatus> action)
+        public void SubscribeToTaskProgressChanged(string context, Func<ITaskStatus, Task> action)
         {
             if (!_dict.TryGetValue(context, out TaskContext c))
             {
@@ -66,7 +66,7 @@ namespace H3x.BlazorProgressIndicator
             c.FireChanged();
         }
 
-        public void UnsubscribeFromTaskProgressChanged(string context, Action<ITaskStatus> action)
+        public void UnsubscribeFromTaskProgressChanged(string context, Func<ITaskStatus, Task> action)
         {
             if (_dict.TryGetValue(context, out TaskContext c))
             {
@@ -77,7 +77,7 @@ namespace H3x.BlazorProgressIndicator
         private class TaskContext
         {
             public List<RunningTask> Tasks = new List<RunningTask>();
-            public event Action<ITaskStatus> Changed;
+            public event Func<ITaskStatus, Task> Changed;
 
             public void FireChanged()
             {
