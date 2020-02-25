@@ -1,23 +1,23 @@
 ﻿@implements IDisposable
-@inject ILoadingService LoadingService
+@inject IIndicatorService IndicatorService
 
 @if (CurrentTask?.Exception != null && ErrorContent != null)
 {
     @ErrorContent(CurrentTask)
 }
-else if (CurrentTask != null && _loadingFragment != null)
+else if (CurrentTask != null)
 {
-    @_loadingFragment
+    @InProgressTemplate(CurrentTask)
 }
 <div style="@(((CurrentTask?.Exception != null && ErrorContent == null) ||
               CurrentTask == null) ? string.Empty : CONTENT_HIDDEN)">
     @ChildContent
 </div>
 
-@code {    
-
-
+@code {
     private const string CONTENT_HIDDEN = "display: none;";
+
+    [Parameter] public RenderFragment<ITaskStatus> InProgressTemplate { get; set; }
 
     [Parameter] public RenderFragment ChildContent { get; set; }
 
@@ -25,44 +25,40 @@ else if (CurrentTask != null && _loadingFragment != null)
 
     [Parameter] public string Context { get; set; }
 
-    [Parameter] public Type TemplateType { get; set; } 
+    [Parameter] public Type TemplateType { get; set; }
 
     private ITaskStatus CurrentTask { get; set; }
 
-    private LoadingIndicatorTemplateBase _template;
+    private static readonly Type DefaultInProgressTemplateType = typeof(DefaultTemplate);
 
-    private RenderFragment _loadingFragment;
-
-    private Func<ITaskStatus, Task> HandleTaskProgressChangedEvent => new Func<ITaskStatus, Task>(async (ITaskStatus task) =>
+    // https://stackoverflow.com/questions/50188680/add-load-components-dynamically
+    RenderFragment<ITaskStatus> InProgressContentCreator() => taskStatus =>
     {
-        CurrentTask = task;
-        if (_template != null)
+        return new RenderFragment((builder) =>
         {
-            _template.CurrentTask = task;
-            await _template.CallStateHasChanged();
-        }
-        await InvokeAsync(StateHasChanged);
-    });
-    
-
-    protected override void OnInitialized()
-    {               
-        if(TemplateType == null) TemplateType = LoadingService.DefaultTemplateType;        
-        LoadingService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
-        _loadingFragment = new RenderFragment(builder =>
-        {
-            builder.OpenComponent(0, TemplateType);
-            builder.AddComponentReferenceCapture(1, inst =>
-            {
-                _template = (LoadingIndicatorTemplateBase)inst;
-                _template.CurrentTask = CurrentTask;
-            });
+            builder.OpenComponent(0, TemplateType ?? IndicatorService.DefaultTemplateType ?? DefaultInProgressTemplateType);
+            builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
             builder.CloseComponent();
         });
+    };
+
+    private async Task HandleTaskProgressChangedEvent(ITaskStatus task)
+    {
+        CurrentTask = task;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override void OnInitialized()
+    {
+        IndicatorService.SubscribeToTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        if (InProgressTemplate == null)
+            InProgressTemplate = InProgressContentCreator();
+
+        base.OnInitialized();
     }
 
     public void Dispose()
     {
-        LoadingService.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
+        IndicatorService.UnsubscribeFromTaskProgressChanged(Context, HandleTaskProgressChangedEvent);
     }
 }
