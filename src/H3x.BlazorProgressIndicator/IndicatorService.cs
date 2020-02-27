@@ -14,7 +14,7 @@ namespace H3x.BlazorProgressIndicator
 
         public bool DumpExceptionsToConsole { get; set; }
 
-        public IndicatorOptions Options { get; internal set; }
+        public IndicatorOptions Options { get; set; }
 
         public async Task StartTaskAsync(Func<ITaskStatus, Task> action, string context = null, string maintext = null, string subtext = null)
         {
