@@ -10,8 +10,6 @@ namespace H3x.BlazorProgressIndicator
     {
         private static ConcurrentDictionary<string, TaskContext> _dict = new ConcurrentDictionary<string, TaskContext>();
 
-        public Type DefaultTemplateType { get; set; } = typeof(DefaultTemplate);
-
         public bool DumpExceptionsToConsole { get; set; }
 
         public IndicatorOptions Options { get; set; }

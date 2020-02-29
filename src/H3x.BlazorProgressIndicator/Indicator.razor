@@ -1,21 +1,25 @@
 ﻿@implements IDisposable
 @inject IIndicatorService IndicatorService
 
-@if (CurrentTask?.Exception != null && ErrorContent != null)
+@if (_currentTask?.Exception != null && ErrorContent != null)
 {
-    @ErrorContent(CurrentTask)
+    @ErrorContent(_currentTask)
 }
-else if (CurrentTask != null)
+else if (_currentTask != null)
 {
-    @InProgressTemplate(CurrentTask)
+    @InProgressTemplate(_currentTask)
 }
-<div style="@(((CurrentTask?.Exception != null && ErrorContent == null) ||
-              CurrentTask == null) ? string.Empty : CONTENT_HIDDEN)">
-    @ChildContent
-</div>
+@if (_childContentShouldBeInTree)
+{
+    <div style="@_childContentCss">
+        @ChildContent
+    </div>
+}
 
 @code {
-    private const string CONTENT_HIDDEN = "display: none;";
+    private const string CSS_DISPLAY_NONE = "display: none;";
+
+    private const string CSS_VISIBILITY_HIDDEN = "visibility: hidden;";
 
     [Parameter] public RenderFragment<ITaskStatus> InProgressTemplate { get; set; }
 
@@ -27,7 +31,39 @@ else if (CurrentTask != null)
 
     [Parameter] public Type TemplateType { get; set; }
 
-    private ITaskStatus CurrentTask { get; set; }
+    [Parameter] public IndicatorChildContentHideModes? ChildContentHideMode { get; set; }
+
+    private ITaskStatus _currentTask { get; set; }
+
+    private IndicatorChildContentHideModes _childContentHideMode => ChildContentHideMode ?? IndicatorService.Options.ChildContentHideMode;
+
+    private bool _childContentShouldBeShown => (_currentTask?.Exception != null && ErrorContent == null) || _currentTask == null;
+
+    private bool _childContentShouldBeInTree
+    {
+        get
+        {
+            if (_childContentShouldBeShown || _childContentHideMode != IndicatorChildContentHideModes.RemoveFromTree)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    private string _childContentCss
+    {
+        get
+        {
+            if (_childContentShouldBeShown || _childContentHideMode == IndicatorChildContentHideModes.RemoveFromTree)
+                return string.Empty;
+            else if (_childContentHideMode == IndicatorChildContentHideModes.CssDisplayNone)
+                return CSS_DISPLAY_NONE;
+            else if (_childContentHideMode == IndicatorChildContentHideModes.CssVisibilityHidden)
+                return CSS_VISIBILITY_HIDDEN;
+            else // should be impossible to occur
+                return string.Empty;
+        }
+    }
 
     private static readonly Type DefaultInProgressTemplateType = typeof(DefaultTemplate);
 
@@ -36,7 +72,7 @@ else if (CurrentTask != null)
     {
         return new RenderFragment((builder) =>
         {
-            builder.OpenComponent(0, TemplateType ?? IndicatorService.DefaultTemplateType ?? DefaultInProgressTemplateType);
+            builder.OpenComponent(0, TemplateType ?? IndicatorService.Options.IndicatorTemplate ?? DefaultInProgressTemplateType);
             builder.AddAttribute(0, nameof(IndicatorTemplateBase.CurrentTask), taskStatus);
             builder.CloseComponent();
         });
@@ -44,7 +80,7 @@ else if (CurrentTask != null)
 
     private async Task HandleTaskProgressChangedEvent(ITaskStatus task)
     {
-        CurrentTask = task;
+        _currentTask = task;
         await InvokeAsync(StateHasChanged);
     }
 
