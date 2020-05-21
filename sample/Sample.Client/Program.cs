@@ -11,15 +11,17 @@ namespace Sample.Client
     {
         public static async Task Main(string[] args)
         {
-            var builder = WebAssemblyHostBuilder.CreateDefault();
-            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("app");
+
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddProgressIndicator(options =>
             {
                 // don't do this, because the SimpleDemo should demo the default template and all pages share the same IIndicatorService
                 //options.IndicatorTemplate = typeof(CustomIndicatorTemplate);
             });
 
-            builder.RootComponents.Add<App>("app");
+            
             await builder.Build().RunAsync();
         }
     }
