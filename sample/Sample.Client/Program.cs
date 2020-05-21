@@ -1,7 +1,8 @@
 ﻿using H3x.BlazorProgressIndicator;
-using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Sample.Client.Shared;
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Sample.Client
@@ -11,6 +12,7 @@ namespace Sample.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault();
+            builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddProgressIndicator(options =>
             {
                 // don't do this, because the SimpleDemo should demo the default template and all pages share the same IIndicatorService
