@@ -1,11 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <IsPackable>true</IsPackable>
-    <LangVersion>8.0</LangVersion>
-    <RazorLangVersion>3.0</RazorLangVersion>
-  
+    <TargetFramework>net5.0</TargetFramework>
+    
     <PackageId>H3x.BlazorProgressIndicator</PackageId>
     <Authors>Sander in 't Hout</Authors>
     <PackageProjectUrl>https://github.com/h3x4d3c1m4l/BlazorProgressIndicator</PackageProjectUrl>
@@ -16,21 +13,17 @@
     <Company />
     <Version />
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <!-- .js/.css files will be referenced via <script>/<link> tags; other content files will just be included in the app's 'dist' directory without any tags referencing them -->
-    <EmbeddedResource Include="wwwroot\**\*.js" LogicalName="blazor:js:%(RecursiveDir)%(Filename)%(Extension)" />
-    <EmbeddedResource Include="wwwroot\**\*.css" LogicalName="blazor:css:%(RecursiveDir)%(Filename)%(Extension)" />
-    <EmbeddedResource Include="wwwroot\**" Exclude="**\*.js;**\*.css" LogicalName="blazor:file:%(RecursiveDir)%(Filename)%(Extension)" />
+    <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="5.1.3" Condition="'$(H3X_SKIP_GITVERSIONTASK)' != ''">
+    <PackageReference Include="GitVersionTask" Version="5.5.1" Condition="'$(H3X_SKIP_GITVERSIONTASK)' != ''">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
