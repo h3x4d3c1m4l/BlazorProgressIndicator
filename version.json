@@ -1,7 +1,9 @@
 {
-  "version": "0.2-preview.8",
+  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "0.3-prerelease",
   "publicReleaseRefSpec": [
-    "^refs/heads/master$"
+    "^refs/heads/master$",
+    "^refs/tags/v\\d+\\.\\d+"
   ],
   "nugetPackageVersion": {
      "semVer": 2
