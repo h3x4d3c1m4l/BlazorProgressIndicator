@@ -19,7 +19,7 @@ namespace H3x.BlazorProgressIndicator
             if (context == null)
                 context = string.Empty;
 
-            var task = new RunningTask(context, maintext, subtext);
+            using var task = new RunningTask(context, maintext, subtext);
             if (!_dict.TryGetValue(context, out TaskContext c))
             {
                 c = new TaskContext
@@ -40,7 +40,6 @@ namespace H3x.BlazorProgressIndicator
             try
             {
                 await action(task);
-                task.Dispose();
             }
             catch (Exception ex)
             {
